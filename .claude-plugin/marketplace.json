@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "ip-tools",
-      "source": ".",
+      "source": "./",
       "description": "Patent and intellectual property data tools - async Python clients for USPTO, EPO, Google Patents, and JPO"
     }
   ]
