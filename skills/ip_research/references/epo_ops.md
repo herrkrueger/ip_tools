@@ -27,7 +27,7 @@ Search published documents using CQL.
 ```python
 async with client_from_env() as client:
     results = await client.search_published(
-        query='ta="machine learning" and pd>=2020',
+        query='ta="machine learning" and pd within "20200101,20231231"',
         range_begin=1,
         range_end=25
     )
@@ -247,26 +247,33 @@ if upp.unitary_patent:
 
 ## CQL Query Syntax
 
-EPO uses Cooperative Query Language:
+EPO uses Cooperative Query Language. Field abbreviations: `ta` (title/abstract), `pa` (applicant), `in` (inventor), `pd` (publication date), `ipc`/`cpc` (classification).
+
+**IMPORTANT**: For date ranges, always use `pd within "YYYYMMDD,YYYYMMDD"`. Do NOT use `pd>=`/`pd<=` — this causes 413 errors even on small result sets.
 
 ```
 # Title/abstract search
 ta="machine learning"
 
-# Applicant
-applicant="Google"
+# Applicant (use pa, not applicant)
+pa="Google"
+pa all "Inventio AG"   # exact multi-word match
 
 # Inventor
-inventor="Smith"
+in="Smith"
 
-# Publication date
-pd>=2020 and pd<=2023
+# Publication date — single date
+pd=20240115
+
+# Publication date — range (MUST use 'within', not >= / <=)
+pd within "20240101,20240131"
 
 # Classification
 cpc="G06N"
+ipc="B66B"
 
 # Combined
-ta="neural" and applicant="IBM" and pd>=2020
+ta="neural" and pa="IBM" and pd within "20240101,20241231"
 ```
 
 ## Rate Limits
