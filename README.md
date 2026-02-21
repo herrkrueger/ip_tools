@@ -8,7 +8,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 
 ```
-/plugin marketplace add github:parkerhancock/ip_tools
+/plugin marketplace add github:herrkrueger/ip_tools
 /plugin install ip-tools
 ```
 
@@ -46,14 +46,14 @@ All sources include automatic caching, rate limiting, and retry logic.
 Inside a Claude Code session, run:
 
 ```
-/plugin marketplace add github:parkerhancock/ip_tools
+/plugin marketplace add github:herrkrueger/ip_tools
 /plugin install ip-tools
 ```
 
 ### From a local clone
 
 ```bash
-git clone https://github.com/parkerhancock/ip_tools.git
+git clone https://github.com/herrkrueger/ip_tools.git
 cd ip_tools
 uv sync
 ```
