@@ -155,7 +155,7 @@ class EpoOpsClient:
             "Accept": "application/xml",
             "User-Agent": "patent-mcp-epo-ops/0.1",
         }
-        self._client = build_cached_http_client(
+        self._client, self._cache_manager = build_cached_http_client(
             use_cache=True,
             cache_name="epo_ops",
             headers=headers,
