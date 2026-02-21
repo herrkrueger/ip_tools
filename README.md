@@ -7,8 +7,9 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 
-```bash
-claude plugins add github:parkerhancock/ip_tools
+```
+/plugin marketplace add github:parkerhancock/ip_tools
+/plugin install ip-tools
 ```
 
 ---
@@ -40,8 +41,34 @@ All sources include automatic caching, rate limiting, and retry logic.
 
 ## Install
 
+### From GitHub (recommended)
+
+Inside a Claude Code session, run:
+
+```
+/plugin marketplace add github:parkerhancock/ip_tools
+/plugin install ip-tools
+```
+
+### From a local clone
+
 ```bash
-claude plugins add github:parkerhancock/ip_tools
+git clone https://github.com/parkerhancock/ip_tools.git
+cd ip_tools
+uv sync
+```
+
+Then inside Claude Code:
+
+```
+/plugin marketplace add /path/to/ip_tools
+/plugin install ip-tools
+```
+
+Or for a single session without installing:
+
+```bash
+claude --plugin-dir /path/to/ip_tools
 ```
 
 That's it. Claude Code now has access to patent data through the `ip_research` skill.
