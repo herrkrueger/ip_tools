@@ -43,19 +43,19 @@ Search with filters.
 ```python
 async with GooglePatentsClient() as client:
     results = await client.search_patents(
-        keywords="neural network",
-        assignee="Google",
-        inventor="Smith",
-        cpc_code="G06N",
-        country="US",
-        language="en",
-        filing_date_from="2020-01-01",
-        filing_date_to="2023-12-31",
+        keywords=["neural network"],
+        assignees=["Google"],
+        inventors=["Smith"],
+        cpc_codes=["G06N"],
+        countries=["US"],
+        languages=["en"],
+        filed_after="2020-01-01",
+        filed_before="2023-12-31",
         status="granted",  # or "pending"
         patent_type="utility",  # or "design", "plant"
-        has_litigation=True,
-        limit=100,
-        offset=0
+        litigation="yes",
+        page_size=100,
+        page=1
     )
 
     for result in results.results:

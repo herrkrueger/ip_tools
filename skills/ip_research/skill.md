@@ -44,9 +44,9 @@ from ip_tools.google_patents import GooglePatentsClient
 
 async with GooglePatentsClient() as client:
     results = await client.search_patents(
-        keywords="machine learning",
-        assignee="Google",
-        limit=25
+        keywords=["machine learning"],
+        assignees=["Google"],
+        page_size=25
     )
 ```
 

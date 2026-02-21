@@ -21,18 +21,17 @@ async with UsptoAssignmentsClient() as client:
     assignments = await client.assignments_for_patent("10123456")
 
     for a in assignments:
-        a.reel_frame           # "12345/0678"
+        a.reel_number          # "12345"
+        a.frame_number         # "0678"
         a.conveyance_text      # "ASSIGNMENT OF ASSIGNORS INTEREST"
         a.recorded_date
         a.execution_date
 
         for assignor in a.assignors:
             assignor.name
-            assignor.execution_date
 
         for assignee in a.assignees:
             assignee.name
-            assignee.address
             assignee.city
             assignee.state
             assignee.country
@@ -58,7 +57,8 @@ assignments = await client.assignments_for_assignee("Google LLC")
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `reel_frame` | str | Reel/frame number |
+| `reel_number` | str | Reel number |
+| `frame_number` | str | Frame number |
 | `conveyance_text` | str | Type of conveyance |
 | `recorded_date` | date | USPTO recording date |
 | `execution_date` | date | Execution date |

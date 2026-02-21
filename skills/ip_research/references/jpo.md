@@ -41,7 +41,7 @@ Get simplified status.
 simple = await client.get_patent_progress_simple("2020-123456")
 ```
 
-### get_patent_documents(application_number) -> ApplicationDocumentsData
+### get_patent_application_documents(application_number) -> ApplicationDocumentsData
 
 Get documents filed by applicant.
 
@@ -65,12 +65,19 @@ Get cited prior art.
 cited = await client.get_patent_cited_documents("2020-123456")
 ```
 
-### get_patent_family_info(application_number) -> FamilyInfo
+### get_patent_divisional_info(application_number) -> list[DivisionalApplicationInfo]
 
-Get divisional and priority information.
+Get divisional application information.
 
 ```python
 divisional = await client.get_patent_divisional_info("2020-123456")
+```
+
+### get_patent_priority_info(application_number) -> list[PriorityInfo]
+
+Get priority claim information.
+
+```python
 priority = await client.get_patent_priority_info("2020-123456")
 ```
 
@@ -90,12 +97,14 @@ Get J-PlatPat link.
 url = await client.get_patent_jplatpat_url("2020-123456")
 ```
 
-### get_patent_pct_national_number(pct_number) -> PctNationalPhaseData
+### get_patent_pct_national_number(kind, number) -> PctNationalPhaseData
 
-Look up Japanese national phase from PCT number.
+Look up Japanese national phase from PCT number. `kind` is a `NumberType` enum value or string (e.g., `"01"` for PCT international application number).
 
 ```python
-jp_app = await client.get_patent_pct_national_number("PCT/US2020/012345")
+from ip_tools.jpo import NumberType
+
+jp_app = await client.get_patent_pct_national_number(NumberType.PCT_APPLICATION, "PCT/US2020/012345")
 ```
 
 ## Design Methods

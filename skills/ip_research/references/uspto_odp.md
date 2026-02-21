@@ -55,11 +55,11 @@ Get file wrapper documents.
 
 ```python
 docs = await client.get_documents("16123456")
-for doc in docs.documentBag:
+for doc in docs.documents:
     doc.documentCode
-    doc.documentDescription
-    doc.officialDate
-    doc.pdfUrl  # Direct download URL
+    doc.documentCodeDescriptionText
+    doc.documentDate
+    doc.downloadOptionBag  # List of download options
 ```
 
 ### get_assignment(application_number) -> AssignmentResponse

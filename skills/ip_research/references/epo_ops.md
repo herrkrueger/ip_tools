@@ -7,7 +7,7 @@ European Patent Office Open Patent Services API.
 ## Client
 
 ```python
-from ip_tools.epo_ops import EpoOpsClient, client_from_env
+from ip_tools.epo_ops import EpoOpsClient, client_from_env, get_client
 
 # From environment variables
 async with client_from_env() as client:
@@ -20,7 +20,7 @@ async with EpoOpsClient(api_key="...", api_secret="...") as client:
 
 ## Methods
 
-### search_published(query, range) -> SearchResponse
+### search_published(query, range_begin, range_end) -> SearchResponse
 
 Search published documents using CQL.
 
@@ -28,92 +28,101 @@ Search published documents using CQL.
 async with client_from_env() as client:
     results = await client.search_published(
         query='ta="machine learning" and pd>=2020',
-        range="1-25"
+        range_begin=1,
+        range_end=25
     )
 
-    for doc in results.documents:
+    for doc in results.results:
         doc.doc_number
         doc.country
         doc.kind
         doc.family_id
+    results.total_results  # Total number of results
 ```
 
-### search_families(query, range) -> SearchResponse
+### search_families(query, range_begin, range_end) -> FamilySearchResponse
 
 Search grouped by patent family.
 
 ```python
 results = await client.search_families(
     query='applicant="Google"',
-    range="1-25"
+    range_begin=1,
+    range_end=25
 )
 ```
 
-### fetch_biblio(doc_id) -> BiblioResponse
+### fetch_biblio(number) -> BiblioResponse
 
-Get bibliographic data.
+Get bibliographic data. Returns a response with a list of `BiblioRecord` documents.
 
 ```python
-biblio = await client.fetch_biblio("EP1234567A1")
-biblio.title
-biblio.abstract
-biblio.applicants
-biblio.inventors
-biblio.classifications
-biblio.priorities
-biblio.publication_date
-biblio.filing_date
+biblio = await client.fetch_biblio(number="EP1234567A1")
+for doc in biblio.documents:
+    doc.title
+    doc.abstract
+    doc.applicants
+    doc.inventors
+    doc.ipc_classes
+    doc.cpc_classes
+    doc.priority_claims
+    doc.publication_reference
+    doc.application_reference
+    doc.family_id
 ```
 
-### fetch_fulltext(doc_id, part) -> FullTextResponse
+### fetch_fulltext(number, section) -> FullTextResponse
 
 Get claims or description.
 
 ```python
 # Get claims
-claims = await client.fetch_fulltext("EP1234567A1", "claims")
+claims = await client.fetch_fulltext(number="EP1234567A1", section="claims")
 for claim in claims.claims:
     claim.number
     claim.text
-    claim.dependencies
+    claim.depends_on
 
 # Get description
-desc = await client.fetch_fulltext("EP1234567A1", "description")
+desc = await client.fetch_fulltext(number="EP1234567A1", section="description")
 desc.text
 ```
 
-### fetch_family(doc_id) -> FamilyResponse
+### fetch_family(number) -> FamilyResponse
 
 Get patent family members.
 
 ```python
-family = await client.fetch_family("EP1234567A1")
+family = await client.fetch_family(number="EP1234567A1")
 for member in family.members:
-    member.doc_number
-    member.country
-    member.kind
-    member.publication_date
+    member.family_id
+    member.publication_number
+    member.application_number
+    member.publication_references  # List of publication references
+    member.application_references
+    member.priority_claims
 ```
 
-### fetch_legal_events(doc_id) -> LegalEventsResponse
+### fetch_legal_events(number) -> LegalEventsResponse
 
 Get legal status history.
 
 ```python
-events = await client.fetch_legal_events("EP1234567A1")
+events = await client.fetch_legal_events(number="EP1234567A1")
 for event in events.events:
-    event.code
-    event.description
-    event.date
+    event.event_code
+    event.free_text
+    event.event_date
+    event.event_country
 ```
 
-### download_pdf(doc_id) -> PdfDownloadResponse
+### download_pdf(number) -> PdfDownloadResponse
 
 Download patent PDF.
 
 ```python
-pdf = await client.download_pdf("EP1234567A1")
-pdf.content_base64  # Base64-encoded PDF
+pdf = await client.download_pdf(number="EP1234567A1")
+pdf.pdf_base64  # Base64-encoded PDF
 ```
 
 ### retrieve_cpc(cpc_code) -> CpcRetrievalResponse

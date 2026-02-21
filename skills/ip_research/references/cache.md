@@ -9,10 +9,10 @@ All clients cache HTTP responses to `~/.cache/ip_tools/`.
 Set default expiration for cache entries:
 
 ```python
-from ip_tools.google_patents import GooglePatentsClient
+from ip_tools.uspto_odp import ApplicationsClient
 
-async with GooglePatentsClient(ttl_seconds=3600) as client:  # 1 hour TTL
-    patent = await client.get_patent_data("US10123456B2")
+async with ApplicationsClient(ttl_seconds=3600) as client:  # 1 hour TTL
+    app = await client.get("16123456")
 ```
 
 Default: Uses HTTP cache headers from server.
@@ -20,20 +20,20 @@ Default: Uses HTTP cache headers from server.
 ### Disable Caching
 
 ```python
-async with GooglePatentsClient(use_cache=False) as client:
-    patent = await client.get_patent_data("US10123456B2")  # Always fetches
+async with ApplicationsClient(use_cache=False) as client:
+    app = await client.get("16123456")  # Always fetches
 ```
 
 ## Cache APIs
 
-All clients expose these methods when caching is enabled:
+Cache APIs are available on `BaseAsyncClient` subclasses (USPTO ODP clients: `ApplicationsClient`, `PtabTrialsClient`, `BulkDataClient`, etc.). `GooglePatentsClient` does **not** have these methods.
 
 ### cache_stats() -> CacheStats
 
 Get cache statistics.
 
 ```python
-async with GooglePatentsClient() as client:
+async with ApplicationsClient() as client:
     # Make some requests...
 
     stats = await client.cache_stats()
